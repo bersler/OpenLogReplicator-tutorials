@@ -1,0 +1,35 @@
+{
+  "version": "1.2.0",
+  "log-level": 3,
+  "source": [
+    {
+      "alias": "S1",
+      "name": "ORA1",
+      "reader": {
+        "type": "online",
+        "path-mapping": ["/opt/oracle/oradata", "/opt/oradata"],
+        "user": "USR1",
+        "password": "USR1PWD",
+        "server": "//oracle:1521/XEPDB1"
+      },
+      "format": {
+        "type": "json"
+      },
+      "filter": {
+        "table": [
+          {"owner": "USR1", "table": "ADAM.*"}
+        ]
+      }
+    }
+  ],
+  "target": [
+    {
+      "alias": "T1",
+      "source": "S1",
+      "writer": {
+        "type": "file",
+        "output": "/opt/output/results.txt"
+      }
+    }
+  ]
+}
