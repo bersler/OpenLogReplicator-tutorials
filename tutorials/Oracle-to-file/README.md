@@ -3,14 +3,24 @@
 ## Create Docker images:
 
 The following images are required for this tutorial:
-* oracle/database:21.3.0-xe
-* bersler/openlogreplicator:tutorial
+- Oracle Database 21.3 XE (`oracle/database:21.3.0-xe`)
+- OpenLogReplicator (`bersler/openlogreplicator:tutorial`)
 
-Refer to [Docker images](../Docker-images) for image creation scripts.
+Refer to [Docker images](../images/README.md) for image creation scripts.
 
-## Set containers names. 
+## Containers names. 
 
-Configure names in cfg.sh
+The default container names are:
+- `ORA1` - Oracle Database 21.3 XE
+- `OLR1` - OpenLogReplicator
+
+Container names are defined `cfg.sh` script.
+
+## Folders used by this tutorial
+
+All files for the database devices and redo log files are placed outside the containers. 
+Refer to 
+The folders are created in step 2 and cleaned up in step 5.
 
 ## Run test
 
