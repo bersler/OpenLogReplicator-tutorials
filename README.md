@@ -1,14 +1,15 @@
-Repository for tutorials of OpenLogReplicator
+# Repository for tutorials of OpenLogReplicator
 
-1. [Containers](containers/README.md) 
+## [Containers](Docker-images/README.md) 
 
-a) Oracle 21.3 XE
-b) OpenLogReplicator
+The following containers are available for creation:
+1. Oracle 21.3 XE (`oracle/database:21.3.0-xe`)
+2. OpenLogReplicator (`bersler/openlogreplicator:tutorial`)
 
-Tutorial creates a container with database, and runs simple SQL queries which are extracted to JSON content.
+Not all containers are required for all tutorials.
 
-2. Tutorials
+## Tutorials
 
-    a) [Oracle to file using Docker compose](DockerCompose-target-file/README.md)
+## [Docker compose: Oracle to file](DockerCompose-Oracle-to-file/README.md)
 
-This tutorial shows how to run OpenLogReplicator on Docker reading changes from Oracle Database 21.3 XE running on Docker.
+Read from Oracle 21.3 XE and write changes to a file.

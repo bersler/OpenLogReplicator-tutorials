@@ -1,16 +1,18 @@
-This script creates Docker images.
+# Docker images creation scripts
 
-1. Oracle XE 21.3 image
+## Oracle XE 21.3 image
 
-Image name is: oracle/database:21.3.0-xe
+Image name is: `oracle/database:21.3.0-xe`
 
 Run:
 
     ./oracle_database_21.3.0-xe.sh
 
-2. OpenLogReplicator image
+## OpenLogReplicator image
 
-Image name is: bersler/openlogreplicator:tutorial
+Image name is: `bersler/openlogreplicator:tutorial`
+
+The name `tutorial` is used here to distinguish from other OpenLogReplicator images which might be used on the same host for other purposes.
 
 Run:
 
