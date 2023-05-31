@@ -16,22 +16,32 @@ Configure names in cfg.sh
 
 1. Check if images are correct:
 
+Run:
+
     ./1.check.sh
 
 2. Setup folders for database tablespaces and scripts
+
+Run:
 
     ./2.setup.sh
 
 3. Create containers
 
+Run:
+
     ./3.create.sh
 
 4. Run SQL and check results
+
+Run:
 
     ./4.test.sh
 
 The expected result would be that the output dir has resuts.txt file with the JSON representation of the transaction run from the sql/test.sql script
 
 5. Cleanup
+
+Run:
 
     ./5.cleanup.sh
