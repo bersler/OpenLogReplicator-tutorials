@@ -18,16 +18,41 @@
 # <http://www.gnu.org/licenses/>.
 set -e
 
-export OLR_IMAGE=bersler/openlogreplicator:tutorial
+. cfg.sh
 
-if [ -d OpenLogReplicator-docker ]; then
-    rm -rf OpenLogReplicator-docker
+if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
+    docker rm -f ${DB_CONTAINER}
 fi
 
-git clone https://github.com/bersler/OpenLogReplicator-docker
-cd OpenLogReplicator-docker
-export GIDORA=54321
-export TAG=${OLR_IMAGE}
-export OPENLOGREPLICATOR_VERSION=master
-./build-dev.sh
-cd ..
+if [ "$(docker ps -a -q -f name=${OLR_CONTAINER})" ]; then
+    docker rm -f ${OLR_CONTAINER}
+fi
+
+if [ -d fra ]; then
+    sudo rm -rf fra
+fi
+
+if [ -d oradata ]; then
+    sudo rm -rf oradata
+fi
+
+if [ -r sql/test.out ]; then
+    sudo rm -rf sql/test.out
+fi
+
+if [ -d checkpoint ]; then
+    sudo rm -rf checkpoint
+fi
+
+if [ -d log ]; then
+    sudo rm -rf log
+fi
+
+if [ -d output ]; then
+    sudo rm -rf output
+fi
+
+sudo rm -f sql/gencfg-ORA1.*
+sudo rm -f sql/*.out
+rm -f sql/gencfg.sql
+# 1>/dev/null 2>&1

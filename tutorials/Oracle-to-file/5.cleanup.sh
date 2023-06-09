@@ -32,7 +32,7 @@ if [ -d fra ]; then
     sudo rm -rf fra
 fi
 
-if [ -d oradara ]; then
+if [ -d oradata ]; then
     sudo rm -rf oradata
 fi
 
@@ -51,3 +51,5 @@ fi
 if [ -d output ]; then
     sudo rm -rf output
 fi
+
+sudo rm -f sql/*.out

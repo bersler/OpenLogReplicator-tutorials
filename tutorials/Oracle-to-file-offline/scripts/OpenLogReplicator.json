@@ -1,23 +1,21 @@
 {
   "version": "1.2.0",
   "log-level": 3,
+  "trace": 0,
   "source": [
     {
       "alias": "S1",
       "name": "ORA1",
       "reader": {
-        "type": "online",
-        "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"],
-        "user": "USR1",
-        "password": "USR1PWD",
-        "server": "//oracle:1521/XEPDB1"
+        "type": "offline",
+        "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"]
       },
       "format": {
         "type": "json"
       },
       "filter": {
         "table": [
-          {"owner": "USR1", "table": "ADAM.*"}
+          {"owner": "USR2", "table": "ADAM.*"}
         ]
       }
     }

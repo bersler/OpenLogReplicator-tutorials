@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright (C) 2018-2023 Adam Leszczynski (aleszczynski@bersler.com)
 #
 # This file is part of OpenLogReplicator-tutorials
@@ -16,18 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with Open Log Replicator; see the file LICENSE.txt  If not see
 # <http://www.gnu.org/licenses/>.
-set -e
 
-export OLR_IMAGE=bersler/openlogreplicator:tutorial
+services:
+  oracle:
+    image: "${DB_IMAGE}"
+    container_name: "${DB_CONTAINER}"
+    volumes:
+      - ./fra:/opt/oracle/fra
+      - ./oradata:/opt/oracle/oradata
+      - ./sql:/opt/sql
+      - ./setup:/opt/oracle/scripts/setup
+    environment:
+      - ORACLE_CHARACTERSET=AL32UTF8
+    build:
+      context: .
+      shm_size: '1gb'
+    shm_size: '1gb'
 
-if [ -d OpenLogReplicator-docker ]; then
-    rm -rf OpenLogReplicator-docker
-fi
-
-git clone https://github.com/bersler/OpenLogReplicator-docker
-cd OpenLogReplicator-docker
-export GIDORA=54321
-export TAG=${OLR_IMAGE}
-export OPENLOGREPLICATOR_VERSION=master
-./build-dev.sh
-cd ..
+  openlogreplicator:
+    image: "${OLR_IMAGE}"
+    container_name: "${OLR_CONTAINER}"
+    depends_on:
+      - oracle
+    volumes:
+      - ./checkpoint:/opt/OpenLogReplicator/checkpoint
+      - ./fra:/opt/fra
+      - ./log:/opt/OpenLogReplicator/log
+      - ./oradata:/opt/oradata
+      - ./output:/opt/output
+      - ./scripts:/opt/OpenLogReplicator/scripts
+    restart: "no"

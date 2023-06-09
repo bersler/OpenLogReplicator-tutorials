@@ -18,8 +18,6 @@
 # <http://www.gnu.org/licenses/>.
 set -e
 
-. cfg.sh
-
 export DB_IMAGE=oracle/database:21.3.0-xe
 
 if [ -d docker-images ]; then

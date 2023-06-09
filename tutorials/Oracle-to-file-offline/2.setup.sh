@@ -18,16 +18,30 @@
 # <http://www.gnu.org/licenses/>.
 set -e
 
-export OLR_IMAGE=bersler/openlogreplicator:tutorial
+. cfg.sh
 
-if [ -d OpenLogReplicator-docker ]; then
-    rm -rf OpenLogReplicator-docker
-fi
+mkdir oradata
+chmod 755 oradata
+sudo chown 54321:54321 oradata
 
-git clone https://github.com/bersler/OpenLogReplicator-docker
-cd OpenLogReplicator-docker
-export GIDORA=54321
-export TAG=${OLR_IMAGE}
-export OPENLOGREPLICATOR_VERSION=master
-./build-dev.sh
-cd ..
+mkdir fra
+chmod 755 fra
+sudo chown 54321:54321 fra
+
+chmod a+x+r+w sql
+chmod a+r sql/*.sql
+
+mkdir checkpoint
+chmod 777 checkpoint
+
+mkdir log
+chmod 777 log
+
+mkdir output
+chmod 777 output
+
+chmod 777 scripts
+chmod 644 scripts/OpenLogReplicator.json
+
+chmod 777 setup
+chmod 644 setup/config.sql

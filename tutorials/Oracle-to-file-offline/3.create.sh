@@ -18,16 +18,6 @@
 # <http://www.gnu.org/licenses/>.
 set -e
 
-export OLR_IMAGE=bersler/openlogreplicator:tutorial
+. cfg.sh
 
-if [ -d OpenLogReplicator-docker ]; then
-    rm -rf OpenLogReplicator-docker
-fi
-
-git clone https://github.com/bersler/OpenLogReplicator-docker
-cd OpenLogReplicator-docker
-export GIDORA=54321
-export TAG=${OLR_IMAGE}
-export OPENLOGREPLICATOR_VERSION=master
-./build-dev.sh
-cd ..
+docker compose up
