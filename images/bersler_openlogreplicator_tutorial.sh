@@ -28,6 +28,5 @@ git clone https://github.com/bersler/OpenLogReplicator-docker
 cd OpenLogReplicator-docker
 export GIDORA=54321
 export TAG=${OLR_IMAGE}
-export OPENLOGREPLICATOR_VERSION=master
 ./build-dev.sh
 cd ..
