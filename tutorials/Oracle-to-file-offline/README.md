@@ -46,11 +46,13 @@ After this step, the container with OpenLogReplicator should be in stopped state
 
 4. Start offline replicator 
 
+Run:
+
     ./4.start.sh
 
 After this step, the container with OpenLogReplicator should be running.
 
-5Run SQL and check results
+5. Run SQL and check results
 
 Run:
 
@@ -58,7 +60,7 @@ Run:
 
 The expected result would be that the output dir has resuts.txt file with the JSON representation of the transaction run from the sql/test.sql script
 
-5. Cleanup
+6. Cleanup
 
 Run:
 
