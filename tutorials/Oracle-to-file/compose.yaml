@@ -1,4 +1,4 @@
-# Copyright (C) 2018-2023 Adam Leszczynski (aleszczynski@bersler.com)
+# Copyright (C) 2018-2024 Adam Leszczynski (aleszczynski@bersler.com)
 #
 # This file is part of OpenLogReplicator-tutorials
 #
@@ -37,7 +37,7 @@ services:
   openlogreplicator:
     image: "${OLR_IMAGE}"
     container_name: "${OLR_CONTAINER}"
-    depends_on: 
+    depends_on:
       - oracle
     volumes:
       - ./checkpoint:/opt/OpenLogReplicator/checkpoint

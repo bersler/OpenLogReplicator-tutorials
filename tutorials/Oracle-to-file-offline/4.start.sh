@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2018-2023 Adam Leszczynski (aleszczynski@bersler.com)
+# Copyright (C) 2018-2024 Adam Leszczynski (aleszczynski@bersler.com)
 #
 # This file is part of OpenLogReplicator-tutorials
 #
@@ -19,8 +19,9 @@
 set -e
 
 . cfg.sh
+VERSION=1.7.0
 
-curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/master/scripts/gencfg.sql -o sql/gencfg.sql
+curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
 
 cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USR2'/g" > sql/gencfg-ORA1.sql
 
