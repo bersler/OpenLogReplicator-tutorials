@@ -17,10 +17,10 @@
 # along with Open Log Replicator; see the file LICENSE.txt  If not see
 # <http://www.gnu.org/licenses/>.
 
-export DB_IMAGE=oracle/database:21.3.0-xe
-export DB_CONTAINER=ORA2
-export OLR_IMAGE=bersler/openlogreplicator:tutorial
-export OLR_CONTAINER=OLR2
+export DB_IMAGE=${DB_IMAGE:=oracle/database:21.3.0-xe}
+export DB_CONTAINER=${DB_CONTAINER:=ORA2}
+export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
+export OLR_CONTAINER=${OLR_CONTAINER:=OLR2}
 
 sql() {
     docker exec ${DB_CONTAINER} /bin/bash -c "export NLS_LANG=american_america.AL32UTF8
