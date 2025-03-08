@@ -19,7 +19,7 @@
 set -e
 
 . cfg.sh
-VERSION=1.8.3
+VERSION=1.8.4
 
 curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
 
@@ -43,3 +43,5 @@ cat <<EOF >checkpoint/ORA1-chkpt.json
 EOF
 
 docker start ${OLR_CONTAINER}
+echo "waiting for olr to start"
+timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)

@@ -20,4 +20,7 @@ set -e
 
 . cfg.sh
 
-docker compose up
+echo "starting docker"
+docker compose up --detach
+echo "waiting for db to start"
+timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
