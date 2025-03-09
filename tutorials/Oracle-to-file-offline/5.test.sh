@@ -24,7 +24,7 @@ sql /opt/sql/test.sql /opt/sql/test.out
 sleep 10
 timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
 echo "Result is:"
-cat output/results.txt.
+cat output/results.txt
 LEN=$(cat output/results.txt | wc -l)
 if [ "$LEN" != "9" ]; then
     exit 1
