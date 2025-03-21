@@ -19,7 +19,7 @@
 set -e
 
 . cfg.sh
-VERSION=1.8.4
+VERSION=1.8.5
 
 curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
 
