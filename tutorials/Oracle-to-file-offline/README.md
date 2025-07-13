@@ -42,9 +42,9 @@ Run:
 
     ./3.create.sh
 
-After this step, the container with OpenLogReplicator should be in stopped state. This is intentional.  
+After this step, the container with OpenLogReplicator should be in stopped state. This is intentional.
 
-4. Start offline replicator 
+4. Configure and start OpenLogReplicator in offline mode
 
 Run:
 

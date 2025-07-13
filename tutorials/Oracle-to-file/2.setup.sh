@@ -20,6 +20,8 @@ set -e
 
 . cfg.sh
 
+echo "2. creating directories"
+
 mkdir oradata
 chmod 755 oradata
 sudo chown 54321:54321 oradata
@@ -45,3 +47,5 @@ chmod 644 scripts/OpenLogReplicator.json
 
 chmod 777 setup
 chmod 644 setup/config.sql
+
+echo "- all OK"

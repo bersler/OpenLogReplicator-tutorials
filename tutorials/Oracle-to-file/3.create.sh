@@ -20,9 +20,11 @@ set -e
 
 . cfg.sh
 
-echo "starting docker"
+echo "3. creating and starting db container"
+
 docker compose up --detach
-echo "waiting for db to start"
+
+echo "- waiting for db to start"
 timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
-echo "waiting for olr to start"
-timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
+
+echo "- all OK"

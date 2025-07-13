@@ -20,18 +20,15 @@ set -e
 
 . cfg.sh
 
-echo "5. running test"
+echo "4. creating and starting olr container"
 
-sql /opt/sql/test.sql /opt/sql/test.out
-sleep 10
-timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
+echo "- creating database schema"
+sql /opt/sql/schema.sql /opt/sql/schema.out
 
-echo "- checking result:"
-cat output/results.txt
-LEN=$(cat output/results.txt | wc -l)
-if [ "$LEN" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got $LEN"
-    exit 1
-fi
+echo "- starting OpenLogReplicator"
+docker start ${OLR_CONTAINER}
+
+echo "- waiting for olr to start"
+timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
 
 echo "- all OK"

@@ -20,18 +20,36 @@ set -e
 
 . cfg.sh
 
-echo "5. running test"
-
-sql /opt/sql/test.sql /opt/sql/test.out
-sleep 10
-timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
-
-echo "- checking result:"
-cat output/results.txt
-LEN=$(cat output/results.txt | wc -l)
-if [ "$LEN" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got $LEN"
-    exit 1
+if [ "$(docker ps -a -q -f name=${OLR_CONTAINER})" ]; then
+    docker rm -f ${OLR_CONTAINER}
 fi
 
-echo "- all OK"
+if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
+    docker rm -f ${DB_CONTAINER}
+fi
+
+if [ -d fra ]; then
+    sudo rm -rf fra
+fi
+
+if [ -d oradata ]; then
+    sudo rm -rf oradata
+fi
+
+if [ -r sql/test.out ]; then
+    sudo rm -rf sql/test.out
+fi
+
+if [ -d checkpoint ]; then
+    sudo rm -rf checkpoint
+fi
+
+if [ -d log ]; then
+    sudo rm -rf log
+fi
+
+if [ -d output ]; then
+    sudo rm -rf output
+fi
+
+sudo rm -f sql/*.out

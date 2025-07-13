@@ -42,16 +42,26 @@ Run:
 
     ./3.create.sh
 
-4. Run SQL and check results
+After this step, the container with OpenLogReplicator should be in stopped state. This is intentional.
+
+4. Configure and start OpenLogReplicator in online mode
 
 Run:
 
-    ./4.test.sh
+    ./4.start.sh
+
+After this step, the container with OpenLogReplicator should be running.
+
+Run SQL and check results
+
+Run:
+
+    ./5.test.sh
 
 The expected result would be that the output dir has resuts.txt file with the JSON representation of the transaction run from the sql/test.sql script
 
-5. Cleanup
+6. Cleanup
 
 Run:
 
-    ./5.cleanup.sh
+    ./6.cleanup.sh

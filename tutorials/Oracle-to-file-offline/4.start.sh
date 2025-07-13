@@ -19,12 +19,16 @@
 set -e
 
 . cfg.sh
-VERSION=1.8.5
+OLR_VERSION=${OLR_VERSION:=1.8.5}
 
-curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
+echo "4. creating and starting olr container"
 
+echo "- creating database schema"
+sql /opt/sql/schema.sql /opt/sql/schema.out
+
+echo "- creating OpenLogReplicator configuration"
+curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
 cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USR2'/g" > sql/gencfg-ORA1.sql
-
 sql /opt/sql/gencfg-ORA1.sql /opt/sql/gencfg-ORA1.out
 
 SCN=`cat sql/gencfg-ORA1.out | egrep "^SCN:" | sed "s/SCN: //g"`
@@ -42,6 +46,10 @@ cat <<EOF >checkpoint/ORA1-chkpt.json
 {"database":"ORA1","scn":${SCN},"resetlogs":${RESETLOGS},"activation":${ACTIVATION}}
 EOF
 
+echo "- starting OpenLogReplicator from SCN ${SCN}"
 docker start ${OLR_CONTAINER}
-echo "waiting for olr to start"
+
+echo "- waiting for olr to start"
 timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
+
+echo "- all OK"

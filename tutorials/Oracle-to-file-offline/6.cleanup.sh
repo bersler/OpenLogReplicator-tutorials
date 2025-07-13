@@ -20,12 +20,12 @@ set -e
 
 . cfg.sh
 
-if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
-    docker rm -f ${DB_CONTAINER}
-fi
-
 if [ "$(docker ps -a -q -f name=${OLR_CONTAINER})" ]; then
     docker rm -f ${OLR_CONTAINER}
+fi
+
+if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
+    docker rm -f ${DB_CONTAINER}
 fi
 
 if [ -d fra ]; then
