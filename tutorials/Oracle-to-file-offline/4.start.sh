@@ -19,7 +19,7 @@
 set -e
 
 . cfg.sh
-OLR_VERSION=${OLR_VERSION:=1.8.5}
+OLR_VERSION=${OLR_VERSION:=1.8.6}
 
 echo "4. creating and starting olr container"
 
