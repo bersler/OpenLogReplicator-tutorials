@@ -21,10 +21,7 @@ set -e
 . cfg.sh
 OLR_VERSION=${OLR_VERSION:=1.8.7}
 
-echo "4. creating and starting olr container"
-
-echo "- creating database schema"
-sql /opt/sql/schema.sql /opt/sql/schema.out
+echo "4. creating and starting  container"
 
 echo "- creating OpenLogReplicator configuration"
 curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
@@ -46,10 +43,10 @@ cat <<EOF >checkpoint/ORA1-chkpt.json
 {"database":"ORA1","scn":${SCN},"resetlogs":${RESETLOGS},"activation":${ACTIVATION}}
 EOF
 
-echo "- starting OpenLogReplicator from SCN ${SCN}"
-docker start ${OLR_CONTAINER}
+echo "- starting OpenLogReplicator (start from SCN ${SCN})"
+docker compose --profile cdc up --detach
 
-echo "- waiting for olr to start"
+echo "- waiting for OpenLogReplicator to start"
 timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
 
 echo "- all OK"

@@ -22,9 +22,13 @@ set -e
 
 echo "3. creating and starting db container"
 
+echo "- starting database"
 docker compose up --detach
 
 echo "- waiting for db to start"
 timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
+
+echo "- creating database schema"
+sql /opt/sql/schema.sql /opt/sql/schema.out
 
 echo "- all OK"

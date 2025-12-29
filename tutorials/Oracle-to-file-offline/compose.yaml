@@ -35,6 +35,7 @@ services:
   openlogreplicator:
     image: "${OLR_IMAGE}"
     container_name: "${OLR_CONTAINER}"
+    profiles: ["cdc"]
     depends_on:
       - oracle
     volumes:

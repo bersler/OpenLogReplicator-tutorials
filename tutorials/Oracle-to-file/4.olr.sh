@@ -22,13 +22,10 @@ set -e
 
 echo "4. creating and starting olr container"
 
-echo "- creating database schema"
-sql /opt/sql/schema.sql /opt/sql/schema.out
+echo "- starting OpenLogReplicator (start from NOW)"
+docker compose --profile cdc up --detach
 
-echo "- starting OpenLogReplicator"
-docker start ${OLR_CONTAINER}
-
-echo "- waiting for olr to start"
+echo "- waiting for OpenLogReplicator to start"
 timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
 
 echo "- all OK"
