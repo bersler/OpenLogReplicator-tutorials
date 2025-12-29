@@ -26,6 +26,6 @@ echo "- starting OpenLogReplicator (start from NOW)"
 docker compose --profile cdc up --detach
 
 echo "- waiting for OpenLogReplicator to start"
-timeout 1800s grep -q 'processing redo log' <(tail -n100 -f log/OpenLogReplicator.err)
+timeout 1800s grep --line-buffered -q 'processing redo log' <(tail -n100 -F --retry log/OpenLogReplicator.err)
 
 echo "- all OK"
