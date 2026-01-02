@@ -32,8 +32,12 @@ Refer to particular tutorial for the list of required containers.
 
 Read from an Oracle 21.3 XE database and write changes to a file.
 
-## Sponsoring the Project
+## Support OpenLogReplicator-tutorials
 
-If you (or your company) are benefiting from the project and would like to support the contributor, kindly support the project.
+If you feel that I should receive some feedback from the world to continue with my hard work - feel free to make a **donation** or become a **sponsor**.
 
-<a href="https://www.buymeacoffee.com/bersler" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 160px !important;" ></a>
+I am very grateful for any amount you donate.
+
+[![Sponsor via GitHub](https://img.shields.io/badge/Sponsor-GitHub-brightgreen)](https://github.com/sponsors/bersler)
+[![Librepay](https://img.shields.io/badge/Donate-Librepay-orange)](https://liberapay.com/bersler)
+[![Buy Me a Coffee](https://img.shields.io/badge/Donate-Coffee-yellow)](https://www.buymeacoffee.com/bersler)
