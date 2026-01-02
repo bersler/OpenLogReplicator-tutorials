@@ -29,8 +29,8 @@ services:
       - ORACLE_CHARACTERSET=AL32UTF8
     build:
       context: .
-      shm_size: '1gb'
-    shm_size: '1gb'
+      shm_size: '2gb'
+    shm_size: '2gb'
 
   openlogreplicator:
     image: "${OLR_IMAGE}"
