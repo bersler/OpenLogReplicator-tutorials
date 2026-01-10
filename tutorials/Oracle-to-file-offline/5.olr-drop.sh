@@ -20,12 +20,12 @@ set -e
 
 . cfg.sh
 
-echo "4. creating and starting olr container"
+echo "5. dropping OpenLogReplicator container"
 
-echo "- starting OpenLogReplicator (start from NOW)"
-docker compose --profile cdc up --detach
+echo "- dropping container:"
+docker rm -f ${OLR_CONTAINER} 1>/dev/null 2>&1 || true
 
-echo "- waiting for OpenLogReplicator to start"
-timeout 1800s grep --line-buffered -q 'processing redo log' <(tail -n100 -F --retry log/OpenLogReplicator.err)
+echo "- cleaning up files:"
+sudo rm -rf sql/gencfg-ORA1.sql sql/gencfg-ORA1.out sql/test.out checkpoint log output sql/gencfg.sql 1>/dev/null 2>&1 || true
 
 echo "- all OK"

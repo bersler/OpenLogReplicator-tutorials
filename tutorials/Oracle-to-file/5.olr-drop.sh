@@ -20,36 +20,15 @@ set -e
 
 . cfg.sh
 
-if [ "$(docker ps -a -q -f name=${OLR_CONTAINER})" ]; then
-    docker rm -f ${OLR_CONTAINER}
-fi
+echo "5. dropping OpenLogReplicator container"
 
-if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
-    docker rm -f ${DB_CONTAINER}
-fi
+echo "- dropping container:"
+docker rm -f ${OLR_CONTAINER} 1>/dev/null 2>&1 || true
 
-if [ -d fra ]; then
-    sudo rm -rf fra
-fi
+echo "- dropping OpenLogReplicator schema"
+sql /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
 
-if [ -d oradata ]; then
-    sudo rm -rf oradata
-fi
+echo "- cleaning up files:"
+sudo rm -rf sql/drop-usrolr.out sql/schema-usrolr.out sql/test.out checkpoint log output 1>/dev/null 2>&1 || true
 
-if [ -r sql/test.out ]; then
-    sudo rm -rf sql/test.out
-fi
-
-if [ -d checkpoint ]; then
-    sudo rm -rf checkpoint
-fi
-
-if [ -d log ]; then
-    sudo rm -rf log
-fi
-
-if [ -d output ]; then
-    sudo rm -rf output
-fi
-
-sudo rm -f sql/*.out
+echo "- all OK"

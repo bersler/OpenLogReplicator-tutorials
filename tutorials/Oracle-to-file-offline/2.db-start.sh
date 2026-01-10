@@ -20,39 +20,30 @@ set -e
 
 . cfg.sh
 
-if [ "$(docker ps -a -q -f name=${OLR_CONTAINER})" ]; then
-    docker rm -f ${OLR_CONTAINER}
-fi
+echo "2. creating and starting database container"
 
-if [ "$(docker ps -a -q -f name=${DB_CONTAINER})" ]; then
-    docker rm -f ${DB_CONTAINER}
-fi
+echo "- creating directories"
+mkdir oradata
+chmod 755 oradata
+sudo chown 54321:54321 oradata
 
-if [ -d fra ]; then
-    sudo rm -rf fra
-fi
+mkdir fra
+chmod 755 fra
+sudo chown 54321:54321 fra
 
-if [ -d oradata ]; then
-    sudo rm -rf oradata
-fi
+chmod a+x+r+w sql
+chmod a+r sql/*.sql
 
-if [ -r sql/test.out ]; then
-    sudo rm -rf sql/test.out
-fi
+chmod 777 setup
+chmod 644 setup/config.sql
 
-if [ -d checkpoint ]; then
-    sudo rm -rf checkpoint
-fi
+echo "- starting database"
+docker compose up --detach
 
-if [ -d log ]; then
-    sudo rm -rf log
-fi
+echo "- waiting for db to start"
+timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
 
-if [ -d output ]; then
-    sudo rm -rf output
-fi
+echo "- creating database schema"
+sql /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
 
-sudo rm -f sql/gencfg-ORA1.*
-sudo rm -f sql/*.out
-rm -f sql/gencfg.sql
-# 1>/dev/null 2>&1
+echo "- all OK"

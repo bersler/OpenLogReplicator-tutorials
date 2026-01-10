@@ -15,7 +15,7 @@
       },
       "filter": {
         "table": [
-          {"owner": "USR2", "table": "ADAM.*"}
+          {"owner": "USRTBL", "table": "ADAM.*"}
         ]
       }
     }

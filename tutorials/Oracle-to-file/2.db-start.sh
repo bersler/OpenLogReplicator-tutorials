@@ -20,19 +20,30 @@ set -e
 
 . cfg.sh
 
-echo "4. running test"
+echo "2. creating and starting database container"
 
-echo "- executing SQL script"
-sql /opt/sql/test.sql /opt/sql/test.out
-sleep 10
-timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
+echo "- creating directories"
+mkdir oradata
+chmod 755 oradata
+sudo chown 54321:54321 oradata
 
-echo "- checking result"
-cat output/results.txt
-LEN=$(cat output/results.txt | wc -l)
-if [ "$LEN" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got $LEN"
-    exit 1
-fi
+mkdir fra
+chmod 755 fra
+sudo chown 54321:54321 fra
+
+chmod a+x+r+w sql
+chmod a+r sql/*.sql
+
+chmod 777 setup
+chmod 644 setup/config.sql
+
+echo "- starting database"
+docker compose up --detach
+
+echo "- waiting for db to start"
+timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
+
+echo "- creating database schema"
+sql /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
 
 echo "- all OK"

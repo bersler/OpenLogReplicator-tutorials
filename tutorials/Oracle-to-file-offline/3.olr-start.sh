@@ -21,11 +21,25 @@ set -e
 . cfg.sh
 OLR_VERSION=${OLR_VERSION:=1.9.0}
 
-echo "4. creating and starting  container"
+echo "3. creating and starting OpenLogReplicator container"
+
+echo "- creating directories"
+
+mkdir checkpoint
+chmod 777 checkpoint
+
+mkdir log
+chmod 777 log
+
+mkdir output
+chmod 777 output
+
+chmod 777 scripts
+chmod 644 scripts/OpenLogReplicator.json
 
 echo "- creating OpenLogReplicator configuration"
 curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
-cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USR2'/g" > sql/gencfg-ORA1.sql
+cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USRTBL'/g" > sql/gencfg-ORA1.sql
 sql /opt/sql/gencfg-ORA1.sql /opt/sql/gencfg-ORA1.out
 
 SCN=`cat sql/gencfg-ORA1.out | egrep "^SCN:" | sed "s/SCN: //g"`

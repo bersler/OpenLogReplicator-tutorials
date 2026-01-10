@@ -20,15 +20,12 @@ set -e
 
 . cfg.sh
 
-echo "3. creating and starting db container"
+echo "6. dropping database container"
 
-echo "- starting database"
-docker compose up --detach
+echo "- dropping container:"
+docker compose down 1>/dev/null 2>&1 || true
 
-echo "- waiting for db to start"
-timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
-
-echo "- creating database schema"
-sql /opt/sql/schema.sql /opt/sql/schema.out
+echo "- cleaning up files:"
+sudo rm -rf fra oradata sql/schema-usrtbl.out 1>/dev/null 2>&1 || true
 
 echo "- all OK"

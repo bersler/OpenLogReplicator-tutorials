@@ -20,19 +20,28 @@ set -e
 
 . cfg.sh
 
-echo "4. running test"
+echo "3. creating and starting OpenLogReplicator container"
 
-echo "- executing SQL script"
-sql /opt/sql/test.sql /opt/sql/test.out
-sleep 10
-timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
+echo "- creating directories"
+mkdir checkpoint
+chmod 777 checkpoint
 
-echo "- checking result"
-cat output/results.txt
-LEN=$(cat output/results.txt | wc -l)
-if [ "$LEN" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got $LEN"
-    exit 1
-fi
+mkdir log
+chmod 777 log
+
+mkdir output
+chmod 777 output
+
+chmod 777 scripts
+chmod 644 scripts/OpenLogReplicator.json
+
+echo "- creating OpenLogReplicator schema"
+sql /opt/sql/schema-usrolr.sql /opt/sql/schema-usrolr.out
+
+echo "- starting OpenLogReplicator (start from NOW)"
+docker compose --profile cdc up --detach
+
+echo "- waiting for OpenLogReplicator to start"
+timeout 1800s grep --line-buffered -q 'processing redo log' <(tail -n100 -F --retry log/OpenLogReplicator.err)
 
 echo "- all OK"

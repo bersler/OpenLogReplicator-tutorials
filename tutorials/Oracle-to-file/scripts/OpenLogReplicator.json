@@ -8,8 +8,8 @@
       "reader": {
         "type": "online",
         "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"],
-        "user": "USR1",
-        "password": "USR1PWD",
+        "user": "USROLR",
+        "password": "USROLRPWD",
         "server": "//oracle:1521/XEPDB1"
       },
       "format": {
@@ -17,7 +17,7 @@
       },
       "filter": {
         "table": [
-          {"owner": "USR1", "table": "ADAM.*"}
+          {"owner": "USRTBL", "table": "ADAM.*"}
         ]
       }
     }
