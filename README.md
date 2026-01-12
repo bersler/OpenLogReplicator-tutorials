@@ -4,11 +4,11 @@ This repository contains tutorials for [OpenLogReplicator](https://github.com/be
 
 ## Requirements
 
-All tutorials are based on Docker containers and created and tested using a Linux operating system using Debian distribution. 
+All tutorials are based on Docker containers and created and tested on a Debian-based Linux distribution.
 
 Due to differences in Docker installation on different operating systems, the scripts require sudo privileges for creating folders and changing file and folder attributes.
 
-The following folder naming is used:
+The following folder names are used:
 - `oradata` - Oracle database files
 - `fra` - Oracle database files
 - `sql` - SQL scripts used for tests
@@ -16,25 +16,32 @@ The following folder naming is used:
 - `log` - OpenLogReplicator log files
 - `scripts` - OpenLogReplicator configuration scripts
 - `setup` - SQL scripts used to setup the database
+- `kafka` - Kafka data files
 
-## [Containers](images/README.md) 
+## Containers
 
-The following containers are available:
-1. Oracle Database 21.3 XE (`oracle/database:21.3.0-xe`)
-2. OpenLogReplicator (`bersler/openlogreplicator:tutorial`)
+The following custom [Docker images](images/README.md) are required to run tutorials:
 
-Not all containers are required for all tutorials. 
-Refer to particular tutorial for the list of required containers.
+- `oracle/database:21.3.0-xe` - Oracle Database 21.3 XE
+- `bersler/openlogreplicator:tutorial` - OpenLogReplicator
+
+Before running the tutorials, create the necessary Docker images.
+Not all images are required for all tutorials.
+Refer to the particular tutorial for the list of required images.
 
 ## Tutorials
 
-### 1. [Docker compose: Oracle to file](tutorials/Oracle-to-file/README.md)
+### 1. Docker compose: [Oracle-to-file](tutorials/Oracle-to-file/README.md)
 
-Read from an Oracle 21.3 XE database and write changes to a file.
+Goal: demonstrate capturing transactional changes from a database and writing them to a file, covering setup, a test change that produces the output, and cleanup.
+
+### 2. Docker compose: [Oracle-to-file-offline](tutorials/Oracle-to-file-offline/README.md)
+
+Goal: demonstrate capturing transactional changes from a database and writing them to a file without a direct database connection, covering setup, a test change that produces the output, and cleanup.
 
 ## Support OpenLogReplicator-tutorials
 
-If you feel that I should receive some feedback from the world to continue with my hard work - feel free to make a **donation** or become a **sponsor**.
+If you feel that I should receive some feedback from the world to continue with my hard work - feel free to make a `donation` or become a `sponsor`.
 
 I am very grateful for any amount you donate.
 

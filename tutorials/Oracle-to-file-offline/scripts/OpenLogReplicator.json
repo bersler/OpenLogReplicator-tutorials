@@ -6,6 +6,10 @@
     {
       "alias": "S1",
       "name": "ORA1",
+      "metrics": {
+        "type": "prometheus",
+        "bind": "0.0.0.0:8080"
+      },
       "reader": {
         "type": "offline",
         "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"]

@@ -58,9 +58,6 @@ cat <<EOF >checkpoint/ORA1-chkpt.json
 EOF
 
 echo "- starting OpenLogReplicator (start from SCN ${SCN})"
-docker compose --profile openlogreplicator up --detach
-
-echo "- waiting for OpenLogReplicator to start"
-timeout 1800s grep --line-buffered -q 'processing redo log' <(tail -n100 -F --retry log/OpenLogReplicator.err)
+docker compose --profile openlogreplicator up --detach --wait
 
 echo "- all OK"
