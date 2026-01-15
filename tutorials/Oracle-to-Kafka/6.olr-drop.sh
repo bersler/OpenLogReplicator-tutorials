@@ -20,32 +20,15 @@ set -e
 
 . cfg.sh
 
-echo "2. creating directories"
+echo "6. dropping OpenLogReplicator container"
 
-mkdir oradata
-chmod 755 oradata
-sudo chown 54321:54321 oradata
+echo "- dropping container:"
+docker rm -f ${OLR_CONTAINER} 1>/dev/null 2>&1 || true
 
-mkdir fra
-chmod 755 fra
-sudo chown 54321:54321 fra
+echo "- dropping OpenLogReplicator schema"
+sql /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
 
-chmod a+x+r+w sql
-chmod a+r sql/*.sql
-
-mkdir checkpoint
-chmod 777 checkpoint
-
-mkdir log
-chmod 777 log
-
-mkdir output
-chmod 777 output
-
-chmod 777 scripts
-chmod 644 scripts/OpenLogReplicator.json
-
-chmod 777 setup
-chmod 644 setup/config.sql
+echo "- cleaning up files:"
+sudo rm -rf sql/drop-usrolr.out sql/schema-usrolr.out sql/test.out checkpoint log 1>/dev/null 2>&1 || true
 
 echo "- all OK"

@@ -1,0 +1,49 @@
+#!/bin/bash
+# Copyright (C) 2018-2026 Adam Leszczynski (aleszczynski@bersler.com)
+#
+# This file is part of OpenLogReplicator-tutorials
+#
+# Open Log Replicator is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# Open Log Replicator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Open Log Replicator; see the file LICENSE.txt  If not see
+# <http://www.gnu.org/licenses/>.
+set -e
+
+. cfg.sh
+
+echo "5. running test"
+
+echo "- executing SQL script"
+sql /opt/sql/test.sql /opt/sql/test.out
+
+echo "- listing Kafka events"
+while
+  MSGS=$(docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server ${KAFKA_BROKER} \
+    --topic ${KAFKA_TOPIC} \
+    --from-beginning \
+    --timeout-ms 1000 \
+    --property print.key=true \
+    --property print.timestamp=true \
+    --property key.separator=" | " | grep "CreateTime")
+  [ -z "${MSGS}" ]
+do true; done
+echo "${MSGS}"
+
+echo "- checking result"
+LEN=$(echo "${MSGS}" | wc -l)
+if [ "${LEN}" != "9" ]; then
+    echo "- incorrect result: expected 9 lines, got ${LEN}"
+    exit 1
+fi
+
+echo "- all OK"

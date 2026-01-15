@@ -1,0 +1,42 @@
+{
+  "version": "1.9.0",
+  "log-level": 3,
+  "metrics": {
+    "type": "prometheus",
+    "bind": "0.0.0.0:8080"
+  },
+  "source": [
+    {
+      "alias": "S1",
+      "name": "ORA1",
+      "reader": {
+        "type": "online",
+        "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"],
+        "user": "USROLR",
+        "password": "USROLRPWD",
+        "server": "//oracle:1521/XEPDB1"
+      },
+      "format": {
+        "type": "json"
+      },
+      "filter": {
+        "table": [
+          {"owner": "USRTBL", "table": "ADAM.*"}
+        ]
+      }
+    }
+  ],
+  "target": [
+    {
+      "alias": "T1",
+      "source": "S1",
+      "writer": {
+        "type": "kafka",
+        "topic": "topic_txns",
+        "properties": {
+          "bootstrap.servers": "kafka:9092"
+        }
+      }
+    }
+  ]
+}
