@@ -31,13 +31,17 @@ Refer to the particular tutorial for the list of required images.
 
 ## Tutorials
 
-### 1. Docker compose: [Oracle-to-file](tutorials/Oracle-to-file/README.md)
+### 1. [Oracle-to-file](tutorials/Oracle-to-file/README.md)
 
 Goal: demonstrate capturing transactional changes from a database and writing them to a file, covering setup, a test change that produces the output, and cleanup.
 
-### 2. Docker compose: [Oracle-to-file-offline](tutorials/Oracle-to-file-offline/README.md)
+### 2. [Oracle-to-file-offline](tutorials/Oracle-to-file-offline/README.md)
 
 Goal: demonstrate capturing transactional changes from a database and writing them to a file without a direct database connection, covering setup, a test change that produces the output, and cleanup.
+
+### 3. [Oracle-to-Kafka](tutorials/Oracle-to-Kafka/README.md)
+
+Goal: demonstrate capturing transactional changes from a database and writing them to a Kafka topic, covering setup, a test change that produces the output, and cleanup.
 
 ## Support OpenLogReplicator-tutorials
 
