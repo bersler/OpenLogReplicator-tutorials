@@ -15,8 +15,8 @@ Refer to [Docker images](../../images/README.md) for image creation scripts.
 
 The default container names are:
 - `ORA1` - Oracle Database 21.3 XE
+- `KAFKA1` - Kafka broker
 - `OLR1` - OpenLogReplicator
-- `KAFKA1` - Kafka
 
 For ease of use, a Zookeeper container is not created separately, since a newer Kafka version is used which relies on KRaft.
 Container names are defined in the `cfg.sh` script.

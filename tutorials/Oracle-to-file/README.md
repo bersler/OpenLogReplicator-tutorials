@@ -15,6 +15,8 @@ Refer to [Docker images](../../images/README.md) for image creation scripts.
 The default container names are:
 - `ORA1` - Oracle Database 21.3 XE
 - `OLR1` - OpenLogReplicator
+- `KAFKA1` - Kafka broker
+- `DEB
 
 Container names are defined in the `cfg.sh` script.
 

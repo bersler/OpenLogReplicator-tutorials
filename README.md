@@ -17,6 +17,8 @@ The following folder names are used:
 - `scripts` - OpenLogReplicator configuration scripts
 - `setup` - SQL scripts used to setup the database
 - `kafka` - Kafka data files
+- `oracle_libs` - Oracle JDBC libraries
+- `instantclient_23_26` - Oracle Instant Client libraries
 
 ## Containers
 

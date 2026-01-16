@@ -26,7 +26,7 @@ services:
       - ./sql:/opt/sql
       - ./setup:/opt/oracle/scripts/setup
     networks:
-      - internal
+      - isolated_network
     environment:
       - ORACLE_CHARACTERSET=AL32UTF8
     build:
@@ -41,7 +41,7 @@ services:
     volumes:
       - ./kafka:/var/lib/kafka/data
     networks:
-      - internal
+      - isolated_network
     environment:
     # KRaft parameters
       - CLUSTER_ID=${KAFKA_CLUSTER}
@@ -58,6 +58,12 @@ services:
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
       - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+    healthcheck:
+      test: ["CMD", "/kafka/bin/kafka-topics.sh", "--bootstrap-server", "${KAFKA_BROKER}", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
 
   openlogreplicator:
     image: "${OLR_IMAGE}"
@@ -75,7 +81,7 @@ services:
       - ./scripts:/opt/OpenLogReplicator/scripts
     restart: "no"
     networks:
-      - internal
+      - isolated_network
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:8080/metrics | grep -q 'service_state{state=\"replicating\"} 1'"]
       interval: '1s'
@@ -84,4 +90,5 @@ services:
       start_period: '60s'
 
 networks:
-  internal:
+  isolated_network:
+    internal: true

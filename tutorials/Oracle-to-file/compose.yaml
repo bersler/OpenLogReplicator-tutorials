@@ -26,7 +26,7 @@ services:
       - ./sql:/opt/sql
       - ./setup:/opt/oracle/scripts/setup
     networks:
-      - internal
+      - isolated_network
     environment:
       - ORACLE_CHARACTERSET=AL32UTF8
     build:
@@ -49,12 +49,14 @@ services:
       - ./scripts:/opt/OpenLogReplicator/scripts
     restart: "no"
     networks:
-      - internal
+      - isolated_network
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:8080/metrics | grep -q 'service_state{state=\"replicating\"} 1'"]
       interval: '1s'
       timeout: '1s'
       retries: '3'
       start_period: '60s'
+
 networks:
-  internal:
+  isolated_network:
+    internal: true

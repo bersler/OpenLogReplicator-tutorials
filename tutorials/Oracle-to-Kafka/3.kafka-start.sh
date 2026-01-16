@@ -29,11 +29,6 @@ chmod 777 kafka
 echo "- starting Kafka"
 docker compose --profile kafka up --detach --wait
 
-echo "- waiting for Kafka to start"
-while ! docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-broker-api-versions.sh --bootstrap-server ${KAFKA_BROKER} > /dev/null 2>&1; do
-  sleep 1
-done
-
 echo "- create Kafka topic ${KAFKA_TOPIC}"
 docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-topics.sh \
   --bootstrap-server ${KAFKA_BROKER} \
