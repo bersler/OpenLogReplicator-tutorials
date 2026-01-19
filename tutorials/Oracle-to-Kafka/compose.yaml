@@ -77,7 +77,6 @@ services:
       - ./fra:/opt/fra
       - ./log:/opt/OpenLogReplicator/log
       - ./oradata:/opt/oradata
-      - ./output:/opt/output
       - ./scripts:/opt/OpenLogReplicator/scripts
     restart: "no"
     networks:
