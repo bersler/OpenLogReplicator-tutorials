@@ -22,11 +22,6 @@ set -e
 . ../common/functions.sh
 
 echo "5. dropping OpenLogReplicator container"
-
-echo "- dropping container:"
 docker_rm "${OLR_CONTAINER}"
-
-echo "- cleaning up files:"
 file_rm sql/gencfg-ORA1.sql sql/gencfg-ORA1.out sql/test.out checkpoint log output sql/gencfg.sql
-
-echo "- all OK"
+finish

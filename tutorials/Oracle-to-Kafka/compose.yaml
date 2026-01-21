@@ -47,7 +47,7 @@ services:
       - CLUSTER_ID=${KAFKA_CLUSTER}
       - KAFKA_NODE_ID=1
       - KAFKA_PROCESS_ROLES=broker,controller
-      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka:9093
     # Listeners
       - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
@@ -81,12 +81,6 @@ services:
     restart: "no"
     networks:
       - isolated_network
-    healthcheck:
-      test: ["CMD-SHELL", "curl -s http://localhost:8080/metrics | grep -q 'service_state{state=\"replicating\"} 1'"]
-      interval: '1s'
-      timeout: '1s'
-      retries: '3'
-      start_period: '60s'
 
 networks:
   isolated_network:

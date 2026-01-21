@@ -22,29 +22,8 @@ set -e
 . ../common/functions.sh
 
 echo "2. creating and starting database container"
-
-echo "- creating directories"
-mkdir oradata
-chmod 755 oradata
-sudo chown 54321:54321 oradata
-
-mkdir fra
-chmod 755 fra
-sudo chown 54321:54321 fra
-
-chmod a+x+r+w sql
-chmod a+r sql/*.sql
-
-chmod 777 setup
-chmod 644 setup/config.sql
-
-echo "- starting database"
+db_files
 docker_up
-
-echo "- waiting for db to start"
 db_wait "${DB_CONTAINER}"
-
-echo "- creating database schema"
-sql ${DB_CONTAINER} /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
-
-echo "- all OK"
+db_sql "${DB_CONTAINER}" /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
+finish

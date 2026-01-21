@@ -22,14 +22,7 @@ set -e
 . ../common/functions.sh
 
 echo "5. dropping OpenLogReplicator container"
-
-echo "- dropping container:"
 docker_rm "${OLR_CONTAINER}"
-
-echo "- dropping OpenLogReplicator schema"
-sql ${DB_CONTAINER} /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
-
-echo "- cleaning up files:"
+db_sql "${DB_CONTAINER}" /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
 file_rm sql/drop-usrolr.out sql/schema-usrolr.out sql/test.out checkpoint log output
-
-echo "- all OK"
+finish

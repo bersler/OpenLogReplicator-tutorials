@@ -22,29 +22,6 @@ set -e
 . ../common/functions.sh
 
 echo "5. running test"
-
-echo "- executing SQL script"
-sql ${DB_CONTAINER} /opt/sql/test.sql /opt/sql/test.out
-
-echo "- listing Kafka events"
-while
-  MSGS=$(docker exec "${KAFKA_CONTAINER}" /kafka/bin/kafka-console-consumer.sh \
-    --bootstrap-server "${KAFKA_BROKER}" \
-    --topic "${KAFKA_TOPIC}" \
-    --from-beginning \
-    --timeout-ms 1000 \
-    --property print.key=true \
-    --property print.timestamp=true \
-    --property key.separator=" | " | grep "CreateTime")
-  [ -z "${MSGS}" ]
-do true; done
-echo "${MSGS}"
-
-echo "- checking result"
-LEN=$(echo "${MSGS}" | wc -l)
-if [ "${LEN}" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got ${LEN}"
-    exit 1
-fi
-
-echo "- all OK"
+db_sql "${DB_CONTAINER}" /opt/sql/test.sql /opt/sql/test.out
+kafka_wait_for_messages "${KAFKA_CONTAINER}" "${KAFKA_BROKER}" "${KAFKA_TOPIC}" 9
+finish

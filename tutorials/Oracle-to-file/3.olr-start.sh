@@ -22,24 +22,8 @@ set -e
 . ../common/functions.sh
 
 echo "3. creating and starting OpenLogReplicator container"
-
-echo "- creating directories"
-mkdir checkpoint
-chmod 777 checkpoint
-
-mkdir log
-chmod 777 log
-
-mkdir output
-chmod 777 output
-
-chmod 777 scripts
-chmod 644 scripts/OpenLogReplicator.json
-
-echo "- creating OpenLogReplicator schema"
-sql ${DB_CONTAINER} /opt/sql/schema-usrolr.sql /opt/sql/schema-usrolr.out
-
-echo "- starting OpenLogReplicator (start from NOW)"
-docker compose --profile openlogreplicator up --detach --wait
-
-echo "- all OK"
+olr_files "output"
+db_sql "${DB_CONTAINER}" /opt/sql/schema-usrolr.sql /opt/sql/schema-usrolr.out
+docker_up --profile openlogreplicator
+olr_wait_for_start "${OLR_CONTAINER}" "replicating"
+finish

@@ -19,7 +19,7 @@
 
 export DB_IMAGE=${DB_IMAGE:=oracle/database:21.3.0-xe}
 export DB_CONTAINER=${DB_CONTAINER:=ORA1}
-export KAFKA_VERSION=3.3.2.Final
+export KAFKA_VERSION=3.4.0.Final
 export KAFKA_IMAGE=${KAFKA_IMAGE:=quay.io/debezium/kafka:${KAFKA_VERSION}}
 export KAFKA_CLUSTER=${KAFKA_CLUSTER:=KAFKA1}
 export KAFKA_CONTAINER=${KAFKA_CONTAINER:=KAFKA1}

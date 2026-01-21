@@ -22,11 +22,6 @@ set -e
 . ../common/functions.sh
 
 echo "8. dropping database container"
-
-echo "- dropping container:"
 docker_down
-
-echo "- cleaning up files:"
-file_rm fra oradata sql/schema-usrtbl.out
-
-echo "- all OK"
+file_rm fra oradata oracle_libs sql/schema-usrtbl.out
+finish

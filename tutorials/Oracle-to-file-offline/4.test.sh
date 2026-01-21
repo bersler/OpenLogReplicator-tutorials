@@ -22,18 +22,6 @@ set -e
 . ../common/functions.sh
 
 echo "4. running test"
-
-echo "- executing SQL script"
-sql ${DB_CONTAINER} /opt/sql/test.sql /opt/sql/test.out
-sleep 10
-timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
-
-echo "- checking result"
-cat output/results.txt
-LEN=$(cat output/results.txt | wc -l)
-if [ "${LEN}" != "9" ]; then
-    echo "- incorrect result: expected 9 lines, got ${LEN}"
-    exit 1
-fi
-
-echo "- all OK"
+db_sql "${DB_CONTAINER}" /opt/sql/test.sql /opt/sql/test.out
+olr_wait_for_results 9
+finish

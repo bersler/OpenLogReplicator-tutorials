@@ -22,18 +22,8 @@ set -e
 . ../common/functions.sh
 
 echo "3. creating and starting Kafka container"
-
-echo "- creating directories"
-mkdir kafka
-chmod 777 kafka
-
-echo "- starting Kafka"
-docker compose --profile kafka up --detach --wait
-
-echo "- create Kafka topic ${KAFKA_TOPIC}"
+kafka_files
+docker_up_wait --profile kafka
 kafka_create_topic "${KAFKA_CONTAINER}" "${KAFKA_BROKER}" "${KAFKA_TOPIC}"
-
-echo "- listing Kafka topics"
 kafka_list_topics "${KAFKA_CONTAINER}" "${KAFKA_BROKER}"
-
-echo "- all OK"
+finish

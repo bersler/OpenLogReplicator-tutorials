@@ -22,42 +22,8 @@ set -e
 . ../common/functions.sh
 
 echo "3. creating and starting OpenLogReplicator container"
-
-echo "- creating directories"
-
-mkdir checkpoint
-chmod 777 checkpoint
-
-mkdir log
-chmod 777 log
-
-mkdir output
-chmod 777 output
-
-chmod 777 scripts
-chmod 644 scripts/OpenLogReplicator.json
-
-echo "- creating OpenLogReplicator configuration"
-curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
-cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USRTBL'/g" > sql/gencfg-ORA1.sql
-sql ${DB_CONTAINER} /opt/sql/gencfg-ORA1.sql /opt/sql/gencfg-ORA1.out
-
-SCN=`cat sql/gencfg-ORA1.out | egrep "^SCN:" | sed "s/SCN: //g"`
-RESETLOGS=`cat sql/gencfg-ORA1.out | egrep "^{\"incarnation" | grep "\"status\":\"CURRENT\"" | sed "s/^.*\"resetlogs\"://g" | sed "s/\,.*$//g"`
-ACTIVATION=`cat sql/gencfg-ORA1.out | egrep "^{\"database" | sed "s/^.*activation\"://g" | sed "s/\,.*$//g"`
-cat sql/gencfg-ORA1.out \
-    | grep -v "PL/SQL procedure successfully completed." \
-    | egrep -v "^SQL\>" \
-    | egrep -v "SCN: " \
-    | egrep -v "^CONTENT OF: " \
-    | egrep -v "^$" \
-    > checkpoint/ORA1-chkpt-${SCN}.json
-
-cat <<EOF >checkpoint/ORA1-chkpt.json
-{"database":"ORA1","scn":${SCN},"resetlogs":${RESETLOGS},"activation":${ACTIVATION}}
-EOF
-
-echo "- starting OpenLogReplicator (start from SCN ${SCN})"
-docker compose --profile openlogreplicator up --detach --wait
-
-echo "- all OK"
+olr_files "output"
+olr_config_offline "${DB_CONTAINER}"
+docker_up --profile openlogreplicator
+olr_wait_for_start "${OLR_CONTAINER}" "replicating"
+finish

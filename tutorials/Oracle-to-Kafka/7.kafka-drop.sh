@@ -22,11 +22,6 @@ set -e
 . ../common/functions.sh
 
 echo "7. dropping Kafka container"
-
-echo "- dropping container:"
 docker_rm "${KAFKA_CONTAINER}"
-
-echo "- cleaning up files:"
 file_rm kafka
-
-echo "- all OK"
+finish
