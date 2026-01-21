@@ -19,13 +19,14 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "7. dropping Kafka container"
 
 echo "- dropping container:"
-docker rm -f ${KAFKA_CONTAINER} 1>/dev/null 2>&1 || true
+docker_rm "${KAFKA_CONTAINER}"
 
 echo "- cleaning up files:"
-sudo rm -rf kafka 1>/dev/null 2>&1 || true
+file_rm kafka
 
 echo "- all OK"

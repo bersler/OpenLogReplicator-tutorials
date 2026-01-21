@@ -19,17 +19,18 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "5. running test"
 
 echo "- executing SQL script"
-sql /opt/sql/test.sql /opt/sql/test.out
+sql ${DB_CONTAINER} /opt/sql/test.sql /opt/sql/test.out
 
 echo "- listing Kafka events"
 while
-  MSGS=$(docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-console-consumer.sh \
-    --bootstrap-server ${KAFKA_BROKER} \
-    --topic ${KAFKA_TOPIC} \
+  MSGS=$(docker exec "${KAFKA_CONTAINER}" /kafka/bin/kafka-console-consumer.sh \
+    --bootstrap-server "${KAFKA_BROKER}" \
+    --topic "${KAFKA_TOPIC}" \
     --from-beginning \
     --timeout-ms 1000 \
     --property print.key=true \

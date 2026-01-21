@@ -19,13 +19,14 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "5. dropping OpenLogReplicator container"
 
 echo "- dropping container:"
-docker rm -f ${OLR_CONTAINER} 1>/dev/null 2>&1 || true
+docker_rm "${OLR_CONTAINER}"
 
 echo "- cleaning up files:"
-sudo rm -rf sql/gencfg-ORA1.sql sql/gencfg-ORA1.out sql/test.out checkpoint log output sql/gencfg.sql 1>/dev/null 2>&1 || true
+file_rm sql/gencfg-ORA1.sql sql/gencfg-ORA1.out sql/test.out checkpoint log output sql/gencfg.sql
 
 echo "- all OK"

@@ -19,6 +19,7 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "3. creating and starting OpenLogReplicator container"
 
@@ -36,7 +37,7 @@ chmod 777 scripts
 chmod 644 scripts/OpenLogReplicator.json
 
 echo "- creating OpenLogReplicator schema"
-sql /opt/sql/schema-usrolr.sql /opt/sql/schema-usrolr.out
+sql ${DB_CONTAINER} /opt/sql/schema-usrolr.sql /opt/sql/schema-usrolr.out
 
 echo "- starting OpenLogReplicator (start from NOW)"
 docker compose --profile openlogreplicator up --detach --wait

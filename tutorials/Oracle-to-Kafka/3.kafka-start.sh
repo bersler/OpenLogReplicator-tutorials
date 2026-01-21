@@ -19,6 +19,7 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "3. creating and starting Kafka container"
 
@@ -30,16 +31,9 @@ echo "- starting Kafka"
 docker compose --profile kafka up --detach --wait
 
 echo "- create Kafka topic ${KAFKA_TOPIC}"
-docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-topics.sh \
-  --bootstrap-server ${KAFKA_BROKER} \
-  --create \
-  --topic ${KAFKA_TOPIC} \
-  --partitions 1 \
-  --replication-factor 1
+kafka_create_topic "${KAFKA_CONTAINER}" "${KAFKA_BROKER}" "${KAFKA_TOPIC}"
 
 echo "- listing Kafka topics"
-docker exec ${KAFKA_CONTAINER} /kafka/bin/kafka-topics.sh \
-  --bootstrap-server ${KAFKA_BROKER} \
-  --list
+kafka_list_topics "${KAFKA_CONTAINER}" "${KAFKA_BROKER}"
 
 echo "- all OK"

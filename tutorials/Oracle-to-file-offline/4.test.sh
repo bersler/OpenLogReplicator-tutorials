@@ -19,11 +19,12 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "4. running test"
 
 echo "- executing SQL script"
-sql /opt/sql/test.sql /opt/sql/test.out
+sql ${DB_CONTAINER} /opt/sql/test.sql /opt/sql/test.out
 sleep 10
 timeout 600s grep -q 'scn' <(tail -n100 -f output/results.txt)
 

@@ -19,16 +19,17 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "6. dropping OpenLogReplicator container"
 
 echo "- dropping container:"
-docker rm -f ${OLR_CONTAINER} 1>/dev/null 2>&1 || true
+docker_rm "${OLR_CONTAINER}"
 
 echo "- dropping OpenLogReplicator schema"
-sql /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
+sql ${DB_CONTAINER} /opt/sql/drop-usrolr.sql /opt/sql/drop-usrolr.out
 
 echo "- cleaning up files:"
-sudo rm -rf sql/drop-usrolr.out sql/schema-usrolr.out sql/test.out checkpoint log 1>/dev/null 2>&1 || true
+file_rm sql/drop-usrolr.out sql/schema-usrolr.out sql/test.out checkpoint log
 
 echo "- all OK"

@@ -19,13 +19,14 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "8. dropping database container"
 
 echo "- dropping container:"
-docker compose down 1>/dev/null 2>&1 || true
+docker_down
 
 echo "- cleaning up files:"
-sudo rm -rf fra oradata sql/schema-usrtbl.out 1>/dev/null 2>&1 || true
+file_rm fra oradata sql/schema-usrtbl.out
 
 echo "- all OK"

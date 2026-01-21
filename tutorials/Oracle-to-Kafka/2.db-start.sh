@@ -19,6 +19,7 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "2. creating and starting database container"
 
@@ -38,12 +39,12 @@ chmod 777 setup
 chmod 644 setup/config.sql
 
 echo "- starting database"
-docker compose up --detach
+docker_up
 
 echo "- waiting for db to start"
-timeout 1800s grep -q 'DATABASE IS READY TO USE' <(docker logs -f ${DB_CONTAINER})
+db_wait "${DB_CONTAINER}"
 
 echo "- creating database schema"
-sql /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
+sql ${DB_CONTAINER} /opt/sql/schema-usrtbl.sql /opt/sql/schema-usrtbl.out
 
 echo "- all OK"

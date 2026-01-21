@@ -19,26 +19,6 @@
 
 export DB_IMAGE=${DB_IMAGE:=oracle/database:21.3.0-xe}
 export DB_CONTAINER=${DB_CONTAINER:=ORA2}
+export OLR_VERSION=${OLR_VERSION:=1.9.0}
 export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
 export OLR_CONTAINER=${OLR_CONTAINER:=OLR2}
-
-sql() {
-    docker exec ${DB_CONTAINER} /bin/bash -c "export NLS_LANG=american_america.AL32UTF8
-export ORACLE_SID=XE
-. oraenv
-sqlplus / as sysdba <<EOF
-set echo off
-set verify off
-set heading off
-set termout off
-set showmode off
-set linesize 5000
-set pagesize 0
-ALTER SESSION SET CONTAINER = XEPDB1;
-spool ${2}
-@${1}
-spool off
-EOF
-chmod a+r ${2}
-" 1>/dev/null 2>&1
-}

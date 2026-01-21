@@ -19,6 +19,7 @@
 set -e
 
 . cfg.sh
+. ../common/functions.sh
 
 echo "1. checking docker images"
 
