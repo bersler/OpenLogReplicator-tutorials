@@ -22,6 +22,7 @@ set -e
 . ../common/functions.sh
 
 echo "6. dropping database container"
+docker_rm ${DB_CONTAINER}
 docker_down
 file_rm fra oradata sql/schema-usrtbl.out
 finish

@@ -22,3 +22,4 @@ export DB_CONTAINER=${DB_CONTAINER:=ORA2}
 export OLR_VERSION=${OLR_VERSION:=1.9.0}
 export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
 export OLR_CONTAINER=${OLR_CONTAINER:=OLR2}
+export DUMP_LOGS=${DUMP_LOGS:=0}

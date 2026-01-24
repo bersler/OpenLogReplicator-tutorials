@@ -37,6 +37,10 @@ spool off
 EOF
 chmod a+r ${3}
 " 1>/dev/null 2>&1 || true
+    if [ "$DUMP_LOGS" -eq "1" ]; then
+        echo "- dumping SQL output ${3}"
+        docker exec "${1}" /bin/bash -c "cat ${3}" || true
+    fi
 }
 
 db_wait() {
@@ -88,22 +92,28 @@ docker_check() {
 }
 
 docker_rm() {
-    echo "- dropping container: $@"
-    docker rm -f "$@" 1>/dev/null 2>&1 || true
+    echo "- stopping Docker container: ${1}"
+    docker stop "${1}" 1>/dev/null 2>&1 || true
+    if [ "$DUMP_LOGS" -eq "1" ]; then
+        echo "- dumping logs for container: ${1}"
+        docker logs "${1}" || true
+    fi
+    echo "- dropping Docker container: ${1}"
+    docker rm -f "${1}" 1>/dev/null 2>&1 || true
 }
 
 docker_down() {
-    echo "- dropping all containers"
+    echo "- removing local Docker network"
     docker compose down 1>/dev/null 2>&1 || true
 }
 
 docker_up() {
-    echo "- starting database and $@"
+    echo "- starting Docker containers"
     docker compose "$@" up --detach
 }
 
 docker_up_wait() {
-    echo "- starting database and $@"
+    echo "- starting Docker containers"
     docker compose "$@" up --detach --wait
 }
 
@@ -146,6 +156,10 @@ olr_config_offline() {
     echo "- creating OpenLogReplicator configuration"
     curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
     cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USRTBL'/g" > sql/gencfg-ORA1.sql
+    if [ "$DUMP_LOGS" -eq "1" ]; then
+        echo "- gencfg SQL script:"
+        cat sql/gencfg-ORA1.sql
+    fi
     db_sql "${1}" /opt/sql/gencfg-ORA1.sql /opt/sql/gencfg-ORA1.out
 
     SCN=`cat sql/gencfg-ORA1.out | egrep "^SCN:" | sed "s/SCN: //g"`
@@ -162,10 +176,18 @@ olr_config_offline() {
         | egrep -v "^CONTENT OF: " \
         | egrep -v "^$" \
         > checkpoint/ORA1-chkpt-${SCN}.json
+    if [ "$DUMP_LOGS" -eq "1" ]; then
+        echo "- gencfg output:"
+        cat checkpoint/ORA1-chkpt-${SCN}.json
+    fi
 
     cat <<EOF >checkpoint/ORA1-chkpt.json
     {"database":"ORA1","scn":${SCN},"resetlogs":${RESETLOGS},"activation":${ACTIVATION}}
 EOF
+    if [ "$DUMP_LOGS" -eq "1" ]; then
+        echo "- checkpoint file:"
+        cat checkpoint/ORA1-chkpt.json
+    fi
 }
 
 olr_wait_for_results() {
