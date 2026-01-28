@@ -73,6 +73,7 @@ services:
       - oracle
       - kafka
     volumes:
+      - ./bin:/opt/bin
       - ./checkpoint:/opt/OpenLogReplicator/checkpoint
       - ./fra:/opt/fra
       - ./log:/opt/OpenLogReplicator/log

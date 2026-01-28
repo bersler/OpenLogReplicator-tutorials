@@ -124,6 +124,13 @@ file_rm() {
 
 olr_files() {
     echo "- creating directories"
+    mkdir bin
+    chmod 777 bin
+    if [ ! -z "${OLR_CUSTOM}" ] && [ -x "${OLR_CUSTOM}" ]; then
+        cp "${OLR_CUSTOM}" bin/OpenLogReplicator
+        chmod 755 bin/OpenLogReplicator
+    fi
+
     mkdir checkpoint
     chmod 777 checkpoint
 

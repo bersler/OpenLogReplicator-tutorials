@@ -29,4 +29,5 @@ export KAFKA_BROKER=${KAFKA_BROKER:=kafka:9092}
 export KAFKA_TOPIC=${KAFKA_TOPIC:=topic_txns}
 export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
 export OLR_CONTAINER=${OLR_CONTAINER:=OLR1}
+export OLR_CUSTOM=${OLR_CUSTOM:=}
 export DUMP_LOGS=${DUMP_LOGS:=0}

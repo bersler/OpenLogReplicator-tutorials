@@ -21,4 +21,5 @@ export DB_IMAGE=${DB_IMAGE:=oracle/database:21.3.0-xe}
 export DB_CONTAINER=${DB_CONTAINER:=ORA1}
 export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
 export OLR_CONTAINER=${OLR_CONTAINER:=OLR1}
+export OLR_CUSTOM=${OLR_CUSTOM:=}
 export DUMP_LOGS=${DUMP_LOGS:=0}
