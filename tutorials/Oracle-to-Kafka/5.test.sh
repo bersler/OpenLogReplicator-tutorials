@@ -23,5 +23,5 @@ set -e
 
 echo "5. running test"
 db_sql "${DB_CONTAINER}" /opt/sql/test.sql /opt/sql/test.out
-kafka_wait_for_messages "${KAFKA_CONTAINER}" "${KAFKA_BROKER}" "${KAFKA_TOPIC}" 9
+kafka_wait_for_messages "${KAFKA_CONTAINER}" "${KAFKA_BROKER}" "${KAFKA_TOPIC}" "c_scn" 9
 finish

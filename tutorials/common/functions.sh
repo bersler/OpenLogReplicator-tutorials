@@ -63,11 +63,15 @@ db_client() {
 
 db_files() {
     echo "- creating directories"
-    mkdir oradata
+    if [ ! -d oradata ]; then
+        mkdir oradata
+    fi
     chmod 755 oradata
     sudo chown 54321:54321 oradata
 
-    mkdir fra
+    if [ ! -d fra ]; then
+        mkdir fra
+    fi
     chmod 755 fra
     sudo chown 54321:54321 fra
 
@@ -232,11 +236,11 @@ kafka_wait_for_messages() {
             --timeout-ms 1000 \
             --property print.key=true \
             --property print.timestamp=true \
-            --property key.separator=" | " | grep "CreateTime")
+            --property key.separator=" | " | grep "CreateTime" | grep "${4}")
         set -e
         if [ ! -z "${MSGS}" ]; then
             LEN=$(echo "${MSGS}" | wc -l)
-            if [ "${LEN}" == "${4}" ] ; then
+            if [ "${LEN}" == "${5}" ] ; then
                 echo "${MSGS}"
                 return 0
             fi
