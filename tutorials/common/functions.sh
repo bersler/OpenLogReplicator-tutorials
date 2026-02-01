@@ -66,13 +66,13 @@ db_files() {
     if [ ! -d oradata ]; then
         mkdir oradata
     fi
-    chmod 755 oradata
+    sudo chmod 755 oradata
     sudo chown 54321:54321 oradata
 
     if [ ! -d fra ]; then
         mkdir fra
     fi
-    chmod 755 fra
+    sudo chmod 755 fra
     sudo chown 54321:54321 fra
 
     chmod a+x+r+w sql
