@@ -23,5 +23,5 @@ set -e
 
 echo "4. running test"
 db_sql "${DB_CONTAINER}" /opt/sql/test.sql /opt/sql/test.out
-olr_wait_for_results 9
+olr_wait_for_results 27
 finish

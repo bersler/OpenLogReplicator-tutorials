@@ -17,11 +17,11 @@
         "server": "//oracle:1521/XEPDB1"
       },
       "format": {
-        "type": "json"
+        "type": "debezium"
       },
       "filter": {
         "table": [
-          {"owner": "USRTBL", "table": "ADAM.*"}
+          {"owner": "USRTBL", "table": "ADAM1"}
         ]
       }
     }
