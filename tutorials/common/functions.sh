@@ -209,6 +209,7 @@ olr_wait_for_results() {
         if [ -f output/results.txt ]; then
             LEN=$(cat output/results.txt | wc -l)
             if [ "${LEN}" == "${1}" ] ; then
+                cat output/results.txt
                 return 0
             fi
         fi
@@ -238,10 +239,11 @@ kafka_wait_for_messages() {
             --property print.timestamp=true \
             --property key.separator=" | " | grep "CreateTime" | grep "${4}")
         set -e
+        LEN=$(echo "${MSGS}" | wc -l)
+        echo "${LEN}/${5} messages: ${MSGS}"
         if [ ! -z "${MSGS}" ]; then
-            LEN=$(echo "${MSGS}" | wc -l)
             if [ "${LEN}" == "${5}" ] ; then
-                echo "${MSGS}"
+                echo "- found ${LEN} messages"
                 return 0
             fi
         fi
@@ -294,7 +296,7 @@ debezium_logminer() {
         \"database.dbname\": \"XEPDB1\",
         \"database.pdb.name\": \"XEPDB1\",
         \"database.connection.adapter\": \"logminer\",
-        \"topic.prefix\": \"oracle_server\",
+        \"topic.prefix\": \"oracle_logminer\",
         \"schema.history.internal.kafka.bootstrap.servers\": \"${2}\",
         \"schema.history.internal.kafka.topic\": \"schema-changes.oracle\",
         \"table.include.list\": \"USRTBL.ADAM1\",
@@ -320,7 +322,7 @@ debezium_olr() {
         \"openlogreplicator.host\": \"openlogreplicator\",
         \"openlogreplicator.port\": \"5000\",
         \"openlogreplicator.source\": \"ORA1\",
-        \"topic.prefix\": \"oracle_server\",
+        \"topic.prefix\": \"oracle_olr\",
         \"schema.history.internal.kafka.bootstrap.servers\": \"${2}\",
         \"schema.history.internal.kafka.topic\": \"schema-changes.oracle\",
         \"table.include.list\": \"USRTBL.ADAM1\",
