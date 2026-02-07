@@ -208,7 +208,7 @@ olr_wait_for_results() {
     for i in {1..60}; do
         if [ -f output/results.txt ]; then
             LEN=$(cat output/results.txt | wc -l)
-            if [ "${LEN}" == "${1}" ] ; then
+            if [ "${LEN}" -ge "${1}" ] ; then
                 cat output/results.txt
                 return 0
             fi

@@ -9,6 +9,7 @@
     {
       "alias": "S1",
       "name": "ORA1",
+      "flags": 32,
       "reader": {
         "type": "online",
         "path-mapping": ["/opt/oracle/oradata", "/opt/oradata", "/opt/oracle/fra", "/opt/fra"],
