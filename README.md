@@ -2,6 +2,16 @@
 
 This repository contains tutorials for [OpenLogReplicator](https://github.com/bersler/OpenLogReplicator).
 
+## License and user rights
+
+OpenLogReplicator-tutorials is released under the **GNU Affero General Public License (AGPL)**.
+
+If you have received software that is based on OpenLogReplicator-tutorials, you are legally entitled to obtain the **full corresponding source code** of that software.
+
+For details, see the [LICENSE](LICENSE) file.
+
+---
+
 ## Requirements
 
 All tutorials are based on Docker containers and created and tested on a Debian-based Linux distribution.
