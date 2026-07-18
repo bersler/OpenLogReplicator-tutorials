@@ -49,11 +49,20 @@ db_wait() {
 }
 
 db_client() {
-    echo "- downloading JDBC driver"
-    wget -q -O oracle_libs/${JDBC_FILE} "${JDBC_URL}"
+    if [ -f ${JDBC_FILE} ]; then
+        echo "- JDBC driver already exists, skipping download"
+        mv ${JDBC_FILE} oracle_libs/${JDBC_FILE}
+    else
+        echo "- downloading JDBC driver"
+        curl -s -o oracle_libs/${JDBC_FILE} "${JDBC_URL}"
+    fi
 
-    echo "- downloading Instant Client"
-    wget -q -O "${INSTANT_CLIENT_FILE}" "${INSTANT_CLIENT_URL}"
+    if [ -f ${JDBC_FILE} ]; then
+        echo "- Instant Clientalready exists, skipping download"
+    else
+        echo "- downloading Instant Client"
+        curl -s -o "${INSTANT_CLIENT_FILE}" "${INSTANT_CLIENT_URL}"
+    fi
 
     echo "- extracting Instant Client"
     unzip -q "${INSTANT_CLIENT_FILE}" 2>&1 >/dev/null
@@ -75,8 +84,8 @@ db_files() {
     sudo chmod 755 fra
     sudo chown 54321:54321 fra
 
-    chmod a+x+r+w sql
-    chmod a+r sql/*.sql
+    chmod a+x+r+w sql || true
+    chmod a+r sql/*.sql || true
 
     chmod 777 setup
     chmod 644 setup/config.sql
@@ -140,6 +149,9 @@ olr_files() {
     mkdir checkpoint
     chmod 777 checkpoint
 
+    mkdir dump || true
+    chmod 777 dump
+
     mkdir log
     chmod 777 log
 
@@ -154,7 +166,7 @@ olr_files() {
 
 olr_wait_for_start() {
     echo "- waiting for OpenLogReplicator to start ${2}"
-    for ((i=1; i<=60; i++)); do
+    for ((i=1; i<=180; i++)); do
         if docker exec "${1}" curl -s http://localhost:8080/metrics | grep -q "service_state{state=\"${2}\"} 1"; then
             return 0
         fi
@@ -167,7 +179,11 @@ olr_wait_for_start() {
 
 olr_config_offline() {
     echo "- creating OpenLogReplicator configuration"
-    curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
+    if [ ! -z "${GENCFG_CUSTOM}" ] && [ -r "${GENCFG_CUSTOM}" ]; then
+        cp "${GENCFG_CUSTOM}" sql/gencfg.sql
+    else
+        curl https://raw.githubusercontent.com/bersler/OpenLogReplicator/refs/tags/v${OLR_VERSION}/scripts/gencfg.sql -o sql/gencfg.sql
+    fi
     cat sql/gencfg.sql | sed "s/'DB'/'ORA1'/g" | sed "s/'USR1', 'USR2'/'USRTBL'/g" > sql/gencfg-ORA1.sql
     if [ "$DUMP_LOGS" -eq "1" ]; then
         echo "- gencfg SQL script:"
@@ -205,7 +221,7 @@ EOF
 
 olr_wait_for_results() {
     echo "- waiting for OpenLogReplicator to produce results"
-    for i in {1..60}; do
+    for i in {1..180}; do
         if [ -f output/results.txt ]; then
             LEN=$(cat output/results.txt | wc -l)
             if [ "${LEN}" == "${1}" ] ; then
@@ -228,7 +244,7 @@ kafka_files() {
 
 kafka_wait_for_messages() {
     echo "- waiting for Kafka ${3} messages"
-    for i in {1..60}; do
+    for i in {1..180}; do
         set +e
         MSGS=$(docker exec "${1}" /kafka/bin/kafka-console-consumer.sh \
             --bootstrap-server "${2}" \
@@ -333,7 +349,7 @@ debezium_olr() {
 
 debezium_wait_for_connect() {
     echo "- waiting for Debezium connector ${2} to start"
-    for ((i=1; i<=60; i++)); do
+    for ((i=1; i<=180; i++)); do
         if docker exec "${1}" curl -s http://localhost:8083/connectors/"${2}"/status | grep -q '"state":"RUNNING"'; then
             sleep 10
             return 0
