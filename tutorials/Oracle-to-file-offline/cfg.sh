@@ -19,7 +19,7 @@
 
 export DB_IMAGE=${DB_IMAGE:=oracle/database:21.3.0-xe}
 export DB_CONTAINER=${DB_CONTAINER:=ORA2}
-export OLR_VERSION=${OLR_VERSION:=1.9.0}
+export OLR_VERSION=${OLR_VERSION:=2.0.0}
 export OLR_IMAGE=${OLR_IMAGE:=bersler/openlogreplicator:tutorial}
 export OLR_CONTAINER=${OLR_CONTAINER:=OLR2}
 export OLR_CUSTOM=${OLR_CUSTOM:=}
