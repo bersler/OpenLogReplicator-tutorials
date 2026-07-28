@@ -36,6 +36,9 @@ The following custom [Docker images](images/README.md) are required to run tutor
 
 - `oracle/database:21.3.0-xe` - Oracle Database 21.3 XE
 - `bersler/openlogreplicator:tutorial` - OpenLogReplicator
+And containers for Debezium/Kafka ecosystem:
+- `quay.io/debezium/kafka` - Kafka
+- `quay.io/debezium/connect` - Debezium connector
 
 Before running the tutorials, create the necessary Docker images.
 Not all images are required for all tutorials.
@@ -43,15 +46,21 @@ Refer to the particular tutorial for the list of required images.
 
 ## Tutorials
 
-### 1. [Oracle-to-file](tutorials/Oracle-to-file/README.md)
+### 1. [Oracle-to-Debezium-logminer](tutorials/Oracle-to-Debezium-logminer/README.md)
+
+Goal: demonstrate capturing transactional changes from a database and writing them to a Kafka topic, covering setup, a test change that produces the output, and cleanup.
+Uses Debezium and LogMiner as the capture method.
+OpenLogReplicator is not used.
+
+### 2. [Oracle-to-file](tutorials/Oracle-to-file/README.md)
 
 Goal: demonstrate capturing transactional changes from a database and writing them to a file, covering setup, a test change that produces the output, and cleanup.
 
-### 2. [Oracle-to-file-offline](tutorials/Oracle-to-file-offline/README.md)
+### 3. [Oracle-to-file-offline](tutorials/Oracle-to-file-offline/README.md)
 
 Goal: demonstrate capturing transactional changes from a database and writing them to a file without a direct database connection, covering setup, a test change that produces the output, and cleanup.
 
-### 3. [Oracle-to-Kafka](tutorials/Oracle-to-Kafka/README.md)
+### 4. [Oracle-to-Kafka](tutorials/Oracle-to-Kafka/README.md)
 
 Goal: demonstrate capturing transactional changes from a database and writing them to a Kafka topic, covering setup, a test change that produces the output, and cleanup.
 

@@ -1,0 +1,33 @@
+#!/bin/bash
+# Copyright (C) 2018-2026 Adam Leszczynski (aleszczynski@bersler.com)
+#
+# This file is part of OpenLogReplicator-tutorials
+#
+# Open Log Replicator is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# Open Log Replicator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Open Log Replicator; see the file LICENSE.txt  If not see
+# <http://www.gnu.org/licenses/>.
+set -e
+
+. cfg.sh
+. ../common/functions.sh
+
+echo "5. creating and starting Debezium container"
+db_sql "${DB_CONTAINER}" /opt/sql/schema-usrdbz_logminer.sql /opt/sql/schema-usrdbz_logminer.out
+db_sql "${DB_CONTAINER}" /opt/sql/schema-usrdbz_olr.sql /opt/sql/schema-usrdbz_olr.out
+sudo chown 1001:1001 ~/debezium/debezium-connector-oracle-3.4.0.Final.jar
+docker_up_wait --profile debezium --profile kafka
+debezium_olr "${DEBEZIUM_CONTAINER}" "${KAFKA_BROKER}"
+debezium_wait_for_connect "${DEBEZIUM_CONTAINER}" "oracle-olr-connector"
+debezium_logminer "${DEBEZIUM_CONTAINER}" "${KAFKA_BROKER}"
+debezium_wait_for_connect "${DEBEZIUM_CONTAINER}" "oracle-logminer-connector"
+finish
